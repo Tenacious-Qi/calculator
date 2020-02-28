@@ -35,7 +35,7 @@ function operate (operator, num1, num2) {
 let displayedNum = document.querySelector('.display');
 displayedNum.textContent = 0;
 let numDisplay;
-let numDisplay2;
+let numDisplay2 = '';
 let calcData = {};
 let calculated;
 let operated;
@@ -44,6 +44,7 @@ let numberArray2 = [];
 
 const numbers= document.querySelectorAll('.number');
 function displayNumbers() {
+
 
     if (!operated) {
         numbers.forEach(number => number.addEventListener('click', function() {
@@ -58,7 +59,7 @@ function displayNumbers() {
         
         numbers.forEach(number => number.addEventListener('click', function() {
             displayedNum.textContent = '';
-            numDisplay2 = +(displayedNum.textContent += number.textContent);
+            numDisplay2 = +number.textContent;
             displayedNum.textContent = numDisplay2;
             numberArray2.push(numDisplay2);
             console.log('numberArray2: ' + numberArray2);
@@ -67,6 +68,7 @@ function displayNumbers() {
         }));
     } 
 }
+
 displayNumbers();
 
 
@@ -81,6 +83,7 @@ function displayResult() {
         displayedNum.textContent = operate(calcData.operator, calcData.number1, calcData.number2);
         calculated = true;
         operated = false;
+        numberArray = [+displayedNum.textContent]
     });
 }
 displayResult();
