@@ -32,83 +32,68 @@ function operate (operator, num1, num2) {
     }
 }
 
-let displayedNum = document.querySelector('.display');
-displayedNum.textContent = 0;
-let numDisplay;
-let numDisplay2 = '';
-let calcData = {};
-let calculated;
-let operated;
-let numberArray = [];
-let numberArray2 = [];
-
-const numbers= document.querySelectorAll('.number');
-function displayNumbers() {
-
-
-    if (!operated) {
-        numbers.forEach(number => number.addEventListener('click', function() {
-            numDisplay = +(displayedNum.textContent += number.textContent);
-            displayedNum.textContent = numDisplay;
-            numberArray.push(numDisplay);
-            console.log('numberArray1: ' + numberArray)
-            calcData.number1 = numberArray[numberArray.length - 2];
-        }));
-    
-    } else if (operated) {
-        
-        numbers.forEach(number => number.addEventListener('click', function() {
-            displayedNum.textContent = '';
-            numDisplay2 = +number.textContent;
-            displayedNum.textContent = numDisplay2;
-            numberArray2.push(numDisplay2);
-            console.log('numberArray2: ' + numberArray2);
-            calcData.number2 = numberArray2[numberArray2.length - 1];
-            
-        }));
-    } 
-}
-
-displayNumbers();
-
-
 const addition = document.querySelector('.add');
 const subtraction = document.querySelector('.subtract');
 const multiplication = document.querySelector('.multiply');
 const division = document.querySelector('.divide');
 const equals = document.querySelector('.equals');
+const numbers= document.querySelectorAll('.number');
+const operators = document.querySelectorAll('.operator');
+
+let displayedNum = document.querySelector('.display');
+let calc = {};
+let calculated;
+let operated;
+
+function displayNumbers() {
+    if (!operated) {
+        numbers.forEach(number => number.addEventListener('click', function() {
+            calc.display = +(displayedNum.textContent += number.textContent)
+        }));
+    }
+}
+
+function setSecondNum() {
+    if (operated) {
+        displayedNum.textContent = displayNumbers();
+        calc.num2 = calc.display;
+    }
+}
+
+function determineOperator() {
+    operators.forEach(operator => operator.addEventListener('click', function() {
+        operated = true;
+        
+        calc.num1 = calc.display;
+        if (operator === addition) {
+            calc.operator = add;
+            setSecondNum();
+        }
+        if (operator === subtraction) {
+            calc.operator = subtract;
+            setSecondNum();
+        }
+        if (operator === multiplication) {
+            calc.operator = multiply;
+            setSecondNum();
+        }
+        if (operator === division) {
+            calc.operator = divide;
+            setSecondNum();
+        }
+    }));
+    
+}
 
 function displayResult() {
     equals.addEventListener('click', function() {
-        displayedNum.textContent = operate(calcData.operator, calcData.number1, calcData.number2);
+        displayedNum.textContent = operate(calc.operator, calc.num2, calc.num1);
         calculated = true;
         operated = false;
-        numberArray = [+displayedNum.textContent]
     });
 }
+
+displayNumbers();
+determineOperator();
+setSecondNum();
 displayResult();
-
-
-
-
-const operators = document.querySelectorAll('.operator');;
-const operation = operators.forEach(operator => operator.addEventListener('click', function() {
-    operated = true;
-    displayNumbers();
-    if (operator === addition) {
-        calcData.operator = add;
-    }
-    if (operator === subtraction) {
-        calcData.operator = subtract;
-    }
-    if (operator === multiplication) {
-        calcData.operator = multiply;
-    }
-    if (operator === division) {
-        calcData.operator = divide;
-    }
-}));
-
-// if (calcData.hasOwnProperty('operator')) {
-//     console.log('hello');
-// }
