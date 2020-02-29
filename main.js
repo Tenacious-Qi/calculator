@@ -27,6 +27,7 @@ const percent = document.querySelector('.percent');
 const opposite = document.querySelector('.opposite');
 const operators = document.querySelectorAll('.operator');
 const displayedNum = document.querySelector('.display');
+const displayedAnswer = document.querySelector('.display-answer');
 let calc = {display: 0};
 let operated;
 let calculated;
@@ -34,12 +35,12 @@ let calculated;
 function displayNumbers() {
     if (!operated) {
         numbers.forEach(number => number.addEventListener('click', function() {
-            calc.display = +(displayedNum.textContent += number.textContent);
+            calc.display = +(displayedNum.textContent += number.value);
             calc.num1 = calc.display;
-            
         }));
     }
 }
+
 
 function setSecondNum() {
     if (!calculated) {
@@ -47,12 +48,25 @@ function setSecondNum() {
         calc.num2 = calc.display;
         }
     }
-        
+
+function modify() {
+        displayedAnswer.textContent = displayedNum.textContent;
+        calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
+        calc.display = calc.answer;
+    }
+
+function reset() {
+    if (calculated) {
+        displayedNum.textContent = '';
+        calc.display = calc.answer; // this allowed me to string together calculations
+        }   
+    }
 
 function determineOperator() {
     operators.forEach(operator => operator.addEventListener('click', function() {
         operated = true;
         calculated = false;
+        
         if (operator === addition) {
             calc.operator = add;
             setSecondNum();
@@ -78,25 +92,25 @@ function determineOperator() {
 
 function displayResult() {
     equals.addEventListener('click', function() {
-        displayedNum.textContent = operate(calc.operator, calc.num2, calc.num1);
+        displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
+        calc.answer = +displayedAnswer.textContent;
+        calc.num1 = calc.answer;
         calc.display = +displayedNum.textContent;
         calculated = true;
         operated = false;
         if (!calc.hasOwnProperty('num2')) {
             operated = false;
             modify();
-        }
+        } 
+        reset(); 
     });
 }
 
-function modify() {
-    displayedNum.textContent = calc.num1;
-    calc.display = calc.num1;
-}
 
 clear.addEventListener('click', function() {
   displayedNum.textContent = '';
-  calc.display = 0;
+  displayedAnswer.textContent = '';
+  calc = {};
   calculated = false;
 });
 
@@ -106,8 +120,10 @@ percent.addEventListener('click', function() {
 });
 
 opposite.addEventListener('click', function() {
-    calc.num1 = +(calc.display * -1);
-    modify();
+    // calc.num1 = +(calc.display * -1);
+    // modify();
+    displayedAnswer.textContent = +(calc.display * -1);
+    calc.display = +displayedAnswer.textContent;
 });
 
 displayNumbers();
