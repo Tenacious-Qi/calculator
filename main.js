@@ -1,34 +1,18 @@
-function add (array) {
-	const sum = array.reduce((a, b) => a + b, 0);
-	return sum;
-}
-
-function subtract (array) {
-	const difference = array.reduce((a, b) => a - b);
-	return difference;
-}
-
-function multiply (array) {
-	const product = array.reduce((a, b) => a * b);
-	return product;
-}
-
-function divide (array) {
-    const quotient = array.reduce((a, b) => a / b);
-    return quotient === Infinity ? 'error: divide by zero' : quotient;
-}
-
+function add (a, b) {return a + b;}
+function subtract (a, b) {return a - b;}
+function multiply (a, b) {return a * b;}
+function divide (a, b) {return a / b === Infinity || a / b === -Infinity ? 'err: divide by zero' : a / b;}
 
 function operate (operator, num1, num2) {
     switch (operator) {
         case add :
-            return add([num1, num2]);
+            return add(num1, num2);
         case subtract :
-            return subtract([num1, num2]);
+            return subtract(num1, num2);
         case multiply :
-            return multiply([num1, num2]);
+            return multiply(num1, num2);
         case divide :
-            return divide([num1, num2]);
+            return divide(num1, num2);
     }
 }
 
@@ -38,33 +22,37 @@ const multiplication = document.querySelector('.multiply');
 const division = document.querySelector('.divide');
 const equals = document.querySelector('.equals');
 const numbers= document.querySelectorAll('.number');
+const clear = document.querySelector('.clear');
+const percent = document.querySelector('.percent');
+const opposite = document.querySelector('.opposite');
 const operators = document.querySelectorAll('.operator');
-
-let displayedNum = document.querySelector('.display');
-let calc = {};
-let calculated;
+const displayedNum = document.querySelector('.display');
+let calc = {display: 0};
 let operated;
+let calculated;
 
 function displayNumbers() {
     if (!operated) {
         numbers.forEach(number => number.addEventListener('click', function() {
-            calc.display = +(displayedNum.textContent += number.textContent)
+            calc.display = +(displayedNum.textContent += number.textContent);
+            calc.num1 = calc.display;
+            
         }));
     }
 }
 
 function setSecondNum() {
-    if (operated) {
+    if (!calculated) {
         displayedNum.textContent = displayNumbers();
         calc.num2 = calc.display;
+        }
     }
-}
+        
 
 function determineOperator() {
     operators.forEach(operator => operator.addEventListener('click', function() {
         operated = true;
-        
-        calc.num1 = calc.display;
+        calculated = false;
         if (operator === addition) {
             calc.operator = add;
             setSecondNum();
@@ -81,19 +69,47 @@ function determineOperator() {
             calc.operator = divide;
             setSecondNum();
         }
+        if (operator === percent) {
+            calc.operator = percentage;
+            setSecondNum();
+        }
     }));
-    
 }
 
 function displayResult() {
     equals.addEventListener('click', function() {
         displayedNum.textContent = operate(calc.operator, calc.num2, calc.num1);
+        calc.display = +displayedNum.textContent;
         calculated = true;
         operated = false;
+        if (!calc.hasOwnProperty('num2')) {
+            operated = false;
+            modify();
+        }
     });
 }
 
+function modify() {
+    displayedNum.textContent = calc.num1;
+    calc.display = calc.num1;
+}
+
+clear.addEventListener('click', function() {
+  displayedNum.textContent = '';
+  calc.display = 0;
+  calculated = false;
+});
+
+percent.addEventListener('click', function() {
+  calc.num1 = +(calc.display * .01);
+  modify();
+});
+
+opposite.addEventListener('click', function() {
+    calc.num1 = +(calc.display * -1);
+    modify();
+});
+
 displayNumbers();
 determineOperator();
-setSecondNum();
 displayResult();
