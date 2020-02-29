@@ -28,9 +28,13 @@ const opposite = document.querySelector('.opposite');
 const operators = document.querySelectorAll('.operator');
 const displayedNum = document.querySelector('.display');
 const displayedAnswer = document.querySelector('.display-answer');
-let calc = {display: 0};
+let calc = {};
 let operated;
 let calculated;
+
+displayNumbers();
+determineOperator();
+displayResult();
 
 function displayNumbers() {
     if (!operated) {
@@ -66,7 +70,6 @@ function determineOperator() {
     operators.forEach(operator => operator.addEventListener('click', function() {
         operated = true;
         calculated = false;
-        
         if (operator === addition) {
             calc.operator = add;
             setSecondNum();
@@ -106,7 +109,6 @@ function displayResult() {
     });
 }
 
-
 clear.addEventListener('click', function() {
   displayedNum.textContent = '';
   displayedAnswer.textContent = '';
@@ -115,17 +117,12 @@ clear.addEventListener('click', function() {
 });
 
 percent.addEventListener('click', function() {
-  calc.num1 = +(calc.display * .01);
-  modify();
+    displayedAnswer.textContent = +(calc.display * .01);
+    calc.display = +displayedAnswer.textContent;
 });
 
 opposite.addEventListener('click', function() {
-    // calc.num1 = +(calc.display * -1);
-    // modify();
     displayedAnswer.textContent = +(calc.display * -1);
     calc.display = +displayedAnswer.textContent;
 });
 
-displayNumbers();
-determineOperator();
-displayResult();
