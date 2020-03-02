@@ -51,7 +51,7 @@ function displayNumbers() {
             calc.display = +(displayedNum.textContent += number.value);
             calc.num1 = calc.display;
         }));
-        decimal.addEventListener('click', (e) => {
+        decimal.addEventListener('click', () => {
             calc.display = displayedNum.textContent += decimal.textContent;
             decimal.disabled = true;
         });
@@ -86,23 +86,28 @@ function determineOperator() {
 
 function setSecondNum() {
     if (operated) {
-
         displayedNum.textContent = displayNumbers();
         calc.num2 = calc.display;
-        displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;
+        if (calc.display.toString().length > 8) {
+            displayedAnswer.textContent = calc.display.toPrecision(6) + ` ${operatorVar.textContent} `;
+        } else {
+            displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;
+        }
+        
     }
     if (!calc.display) { // what to do if operator clicked before a number
-
         displayedAnswer.textContent = 0;
         calc.answer = 0;
         calc.num2 = calc.answer;
     }
+    
     decimal.disabled = false;
 }
 
 function displayResult() {
 
     equals.addEventListener('click', () => {
+
         calculated = true;
         operated = false;
         if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
@@ -132,7 +137,8 @@ function reset() {
     displayedNum.textContent = '';
     calc.display = calc.answer; // this allowed me to string together calculations
     decimal.disabled = false;
-    }   
+    }
+    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
 }
 
 //--- EVENT LISTENERS FOR ACCESSORY BUTTONS -- //

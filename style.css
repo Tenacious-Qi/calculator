@@ -75,16 +75,14 @@ button {
 .display {
     grid-column: 1 / 5;
     grid-row: 1 / 2;
-    font-size: 2.6rem;
-    font-weight: 400;
+    font-size: 2rem;
     padding-right: 10px;
 }
 
 .display-answer {
     grid-row: 2 / 3;
     grid-column: 1 / 5;
-    font-size: 4.2rem;
-    font-weight: 500;
+    font-size: 4rem;
     padding-right: 22px;
     padding-bottom: 20px;
 }
