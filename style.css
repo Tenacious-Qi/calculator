@@ -3,6 +3,7 @@
     --gray: #dfe6e9;
     --darkergray: #747d8c;
     --red: #c0392b;
+    --purple: #9b59b6;
     --blue: #2980b9; /*belize hole */
     --green: #27ae60; /* nephritis */
   }
@@ -13,7 +14,7 @@ html {
     font-size: 10px;
     font-weight: 500;
     color: var(--gray);
-    background-color: var(--black);
+    background-color: #161718;
 }
 *,
 *:before,
@@ -27,34 +28,38 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    min-height: 90vh;
+    min-height: 95vh;
+}
+
+h1 {
+    padding-bottom: 10px;
+    border-bottom: solid 2px var(--gray);
+    font-weight: 400;
 }
 
 #container {
+    margin-top: 15px;
+    background-color: #1e272e;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(7, 1fr);
     justify-content: center;
-    width: 315px;
-    height: 420px;
+    width: 320px;
+    height: 520px;
     border: 4px solid var(--darkergray);
-    border-radius: 4px;
+    border-radius: 15px;
 }
 
 button {
     border: 1px solid var(--darkergray);
     font-size: 2rem;
+    border-radius: 2px;
 }
 
-button:active {
-    transform: translateY(2.5px);
+.number:hover, .other:hover {
+    transform: scale(1.05);
+    transition: .2s;
     background-color: var(--darkergray);
-    transition: .3s;
-}
-
-.operator {
-    background-color: var(--blue);
-    color: var(--gray);
 }
 
 .display, .display-answer {
@@ -64,23 +69,24 @@ button:active {
     justify-content: flex-end;
     letter-spacing: 1.5px;
     overflow: hidden;
+    font-weight: 400;
 }
 
 .display {
     grid-column: 1 / 5;
     grid-row: 1 / 2;
-    font-size: 1.8rem;
+    font-size: 2.6rem;
+    font-weight: 400;
     padding-right: 10px;
 }
 
 .display-answer {
     grid-row: 2 / 3;
     grid-column: 1 / 5;
-    font-size: 3rem;
-    padding-right: 20px;
-    padding-bottom: 15px;
-    /* background-color: var(--gray); */
-    /* color: var(--black); */
+    font-size: 4.2rem;
+    font-weight: 500;
+    padding-right: 22px;
+    padding-bottom: 20px;
 }
 
 .error-message {
@@ -89,12 +95,34 @@ button:active {
 
 .zero {
     grid-column: 1 / 3;
+    border-radius: 0 0 0 10px;
+}
+
+.operator {
+    background-color: var(--blue);
+    color: var(--gray);
+    font-size: 2.5rem;
+}
+
+.operator:hover {
+    background-color: var(--green);
+    transform: scale(1.05);
+    transition: .2s;
 }
 
 .equals {
     background-color: var(--green);
+    border-radius: 0 0 10px 0;
 }
 
-.operator {
-    font-size: 2.5rem;
+.equals:hover {
+    background-color: var(--purple);
+    transform: scale(1.05);
+    transition: .2s;
 }
+
+.decimal {
+    font-weight: 700;
+}
+
+
