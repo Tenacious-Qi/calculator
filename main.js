@@ -1,7 +1,13 @@
 function add (a, b) {return a + b;}
 function subtract (a, b) {return a - b;}
 function multiply (a, b) {return a * b;}
-function divide (a, b) {return a / b === Infinity || a / b === -Infinity ? 'err: divide by zero' : a / b;}
+function divide (a, b) {
+    if (a / b === Infinity || a / b === -Infinity || a === 0 & b === 0) {
+        return 'Not a number';
+    } else {
+        return a / b;
+    }
+}
 
 function operate (operator, num1, num2) {
     switch (operator) {
@@ -31,43 +37,28 @@ const displayedAnswer = document.querySelector('.display-answer');
 let calc = {};
 let operated;
 let calculated;
-
-displayNumbers();
-determineOperator();
-displayResult();
+let operatorVar;
 
 function displayNumbers() {
     if (!operated) {
-        numbers.forEach(number => number.addEventListener('click', function() {
+        numbers.forEach(number => number.addEventListener('click', () => {
             calc.display = +(displayedNum.textContent += number.value);
             calc.num1 = calc.display;
         }));
+    } 
+}
+
+function setSecondNum() {
+    if (operated) {
+        displayedNum.textContent = displayNumbers();
+        calc.num2 = calc.display;
+        displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;
     }
 }
 
-
-function setSecondNum() {
-    if (!calculated) {
-        displayedNum.textContent = displayNumbers();
-        calc.num2 = calc.display;
-        }
-    }
-
-function modify() {
-        displayedAnswer.textContent = displayedNum.textContent;
-        calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
-        calc.display = calc.answer;
-    }
-
-function reset() {
-    if (calculated) {
-        displayedNum.textContent = '';
-        calc.display = calc.answer; // this allowed me to string together calculations
-        }   
-    }
-
 function determineOperator() {
-    operators.forEach(operator => operator.addEventListener('click', function() {
+    operators.forEach(operator => operator.addEventListener('click', () => {
+        if (operator !== equals) operatorVar = operator;
         operated = true;
         calculated = false;
         if (operator === addition) {
@@ -86,43 +77,73 @@ function determineOperator() {
             calc.operator = divide;
             setSecondNum();
         }
-        if (operator === percent) {
-            calc.operator = percentage;
-            setSecondNum();
-        }
     }));
 }
 
 function displayResult() {
-    equals.addEventListener('click', function() {
+    equals.addEventListener('click', () => {
+        calculated = true;
+        operated = false;
+        if (!calc.operator && !calc.num2) {
+            displayedAnswer.textContent = calc.display;
+        }
         displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
+        if (displayedAnswer.textContent.includes('NaN')) displayedAnswer.textContent = 'Not a number';
         calc.answer = +displayedAnswer.textContent;
         calc.num1 = calc.answer;
         calc.display = +displayedNum.textContent;
-        calculated = true;
-        operated = false;
-        if (!calc.hasOwnProperty('num2')) {
-            operated = false;
-            modify();
-        } 
+
+        if (!calc.hasOwnProperty('num2')) {modify();} 
         reset(); 
     });
 }
 
-clear.addEventListener('click', function() {
+function modify() {
+    displayedAnswer.textContent = displayedNum.textContent;
+    calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
+    calc.display = calc.answer;
+}
+
+function reset() {
+    if (calculated) {
+    displayedNum.textContent = '';
+    calc.display = calc.answer; // this allowed me to string together calculations
+    }   
+}
+
+clear.addEventListener('click', () => {
   displayedNum.textContent = '';
   displayedAnswer.textContent = '';
   calc = {};
   calculated = false;
 });
 
-percent.addEventListener('click', function() {
-    displayedAnswer.textContent = +(calc.display * .01);
-    calc.display = +displayedAnswer.textContent;
+percent.addEventListener('click', () => {
+    if (!calc.num2 && !calculated) {
+        displayedAnswer.textContent = (calc.num1 * .01);
+        displayedNum.textContent = +(calc.display * .01);
+        calc.answer = +(displayedNum.textContent);
+        calc.display = calc.answer;
+    } else if (operated) {
+        displayedAnswer.textContent = operate(multiply, calc.num2, calc.num1 * .01);
+        calc.display = +displayedAnswer.textContent;
+        calc.num1 = calc.display;
+    } 
+    else if (calculated) {
+        displayedAnswer.textContent = (calc.num1 * .01);
+        displayedNum.textContent = +(calc.display * .01);
+        calc.answer = +(displayedNum.textContent);
+        calc.display = calc.answer;
+    }
+
 });
 
-opposite.addEventListener('click', function() {
+opposite.addEventListener('click', () => {
     displayedAnswer.textContent = +(calc.display * -1);
+    displayedNum.textContent = +(calc.display * -1);
     calc.display = +displayedAnswer.textContent;
 });
 
+displayNumbers();
+determineOperator();
+displayResult();

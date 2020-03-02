@@ -57,33 +57,36 @@ button:active {
     color: var(--gray);
 }
 
-.display {
-    grid-column: 1 / 5;
-    grid-row: 1 / 2;
+.display, .display-answer {
     text-align: right;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    font-size: 2rem;
     letter-spacing: 1.5px;
-    padding-right: 10px;
     overflow: hidden;
+}
+
+.display {
+    grid-column: 1 / 5;
+    grid-row: 1 / 2;
+    font-size: 1.8rem;
+    padding-right: 10px;
 }
 
 .display-answer {
     grid-row: 2 / 3;
     grid-column: 1 / 5;
+    font-size: 3rem;
+    padding-right: 20px;
+    padding-bottom: 15px;
     /* background-color: var(--gray); */
     /* color: var(--black); */
-    text-align: right;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 3rem;
-    letter-spacing: 1.5px;
-    padding-right: 10px;
-    overflow: hidden;
 }
+
+.error-message {
+    font-size: 12px;
+}
+
 .zero {
     grid-column: 1 / 3;
 }
