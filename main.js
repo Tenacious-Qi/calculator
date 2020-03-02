@@ -89,7 +89,7 @@ function setSecondNum() {
         displayedNum.textContent = displayNumbers();
         calc.num2 = calc.display;
         if (calc.display.toString().length > 8) {
-            displayedAnswer.textContent = calc.display.toPrecision(6) + ` ${operatorVar.textContent} `;
+            displayedAnswer.textContent = calc.display.toPrecision(5) + ` ${operatorVar.textContent} `;
         } else {
             displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;
         }
@@ -138,7 +138,7 @@ function reset() {
     calc.display = calc.answer; // this allowed me to string together calculations
     decimal.disabled = false;
     }
-    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
+    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
 }
 
 //--- EVENT LISTENERS FOR ACCESSORY BUTTONS -- //
