@@ -1,5 +1,6 @@
 :root {
     --black: #2d3436;
+    --darker-black: #161718;
     --gray: #dfe6e9;
     --darkergray: #747d8c;
     --red: #c0392b;
@@ -14,7 +15,7 @@ html {
     font-size: 10px;
     font-weight: 500;
     color: var(--gray);
-    background-color: #161718;
+    background-color: var(--darker-black);
 }
 *,
 *:before,
@@ -33,20 +34,20 @@ body {
 
 h1 {
     padding-bottom: 10px;
-    border-bottom: solid 2px var(--gray);
+    border-bottom: solid 2px var(--green);
     font-weight: 400;
 }
 
 h1:hover {
     transform: scale(1.1);
     transition: .3s;
-    color: var(--green);
-    border-bottom: solid 2px var(--green);
+    color: var(--gray);
+    border-bottom: solid 2px var(--gray);
 }
 
 .github-link {
     text-decoration: none;
-    color: var(--gray)
+    color: var(--green);
 }
 
 .odin-logo {
@@ -74,7 +75,7 @@ h1:hover {
 }
 
 button {
-    border: 1px solid var(--darkergray);
+    border: 1px solid var(--black);
     font-size: 2rem;
     border-radius: 2px;
 }
