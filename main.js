@@ -58,21 +58,21 @@ function displayNumbers() {
             decimal.disabled = true;
         });
     }  
-
-    if (!calculated) {
-        operators.forEach(operator => operator.addEventListener('click', calculate));
-
-    }
 }
 
 function determineOperator() {
 
     operators.forEach(operator => operator.addEventListener('click', () => {
 
+        if (!calculated) {
+            calculate();
+        }
+        
         operated = true;
         calculated = false;
-    
-        if (operator !== equals) operatorVar = operator;
+        
+
+        operatorVar = operator;
 
         if (operator === addition) {
             calc.operator = add;
@@ -90,8 +90,9 @@ function determineOperator() {
             calc.operator = divide;
             setSecondNum();
         }
-
+        
     }));
+
 }
 
 
@@ -122,15 +123,34 @@ equals.addEventListener('click', calculate);
 function calculate() {
     calculated = true;
     operated = false;
+    
 
     if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
     
     displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
     calc.answer = +displayedAnswer.textContent;
     calc.num1 = calc.answer;
-
+    
     if (!calc.hasOwnProperty('num2')) {modify();}
-    reset(); 
+    calc.display = calc.answer
+    displayedNum.textContent = '';
+}
+
+// operators.forEach(operator => operator.addEventListener('click', calculateIfEqualsNotClicked));
+function calculateIfEqualsNotClicked() {
+
+    calculated = true;
+    operated = false;
+
+    if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
+    
+    displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
+    calc.answer = +displayedAnswer.textContent;
+    calc.num1 = calc.answer;
+    
+    if (!calc.hasOwnProperty('num2')) {modify();}
+    calc.display = calc.answer
+    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
 }
 
 // -- HELPER FUNCTIONS -- //
@@ -141,18 +161,19 @@ function modify() {
     calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
     calc.display = calc.answer;
     displayedAnswer.textContent = calc.display;
+    
 
 }
 
-function reset() {
+// function reset() { // disabled 3/3/20 because calc.display = calc.answer seems to do the same thing
 
-    displayedNum.textContent = '';
-    calc.display = calc.answer; // this allowed me to string together calculations after equals is clicked
-    decimal.disabled = false;
+//     displayedNum.textContent = '';
+//     calc.display = calc.answer; // this allowed me to string together calculations after equals is clicked
+//     decimal.disabled = false;
 
-    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
+//     if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
 
-}
+// }
 
 //--- EVENT LISTENERS FOR ACCESSORY BUTTONS -- //
 

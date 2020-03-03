@@ -134,6 +134,7 @@ button {
 
 .equals {
     background-color: var(--green);
+    color: var(--gray);
     border-radius: 0 0 10px 0;
 }
 
