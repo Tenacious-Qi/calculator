@@ -95,14 +95,13 @@ function determineOperator() {
 
 }
 
-
 function setSecondNum() {
 
         displayedNum.textContent = displayNumbers();
         calc.num2 = calc.display;
 
-        if (calc.display.toString().length > 8) {
-            displayedAnswer.textContent = calc.display.toPrecision(5) + ` ${operatorVar.textContent} `;
+        if (calc.display.toString().length > 9) {
+            displayedAnswer.textContent = calc.display.toPrecision(7) + ` ${operatorVar.textContent} `;
         } 
         
         else {
@@ -120,11 +119,12 @@ function setSecondNum() {
 }
 
 equals.addEventListener('click', calculate);
+
 function calculate() {
+    
     calculated = true;
     operated = false;
     
-
     if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
     
     displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
@@ -134,23 +134,9 @@ function calculate() {
     if (!calc.hasOwnProperty('num2')) {modify();}
     calc.display = calc.answer
     displayedNum.textContent = '';
-}
 
-// operators.forEach(operator => operator.addEventListener('click', calculateIfEqualsNotClicked));
-function calculateIfEqualsNotClicked() {
+    if (displayedAnswer.textContent.length > 9) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(7);}
 
-    calculated = true;
-    operated = false;
-
-    if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
-    
-    displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
-    calc.answer = +displayedAnswer.textContent;
-    calc.num1 = calc.answer;
-    
-    if (!calc.hasOwnProperty('num2')) {modify();}
-    calc.display = calc.answer
-    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
 }
 
 // -- HELPER FUNCTIONS -- //
@@ -162,18 +148,7 @@ function modify() {
     calc.display = calc.answer;
     displayedAnswer.textContent = calc.display;
     
-
 }
-
-// function reset() { // disabled 3/3/20 because calc.display = calc.answer seems to do the same thing
-
-//     displayedNum.textContent = '';
-//     calc.display = calc.answer; // this allowed me to string together calculations after equals is clicked
-//     decimal.disabled = false;
-
-//     if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
-
-// }
 
 //--- EVENT LISTENERS FOR ACCESSORY BUTTONS -- //
 
@@ -238,4 +213,3 @@ opposite.addEventListener('click', () => {
 
 displayNumbers();
 determineOperator();
-// displayResult();
