@@ -42,10 +42,12 @@ let calc = {};
 let operated;
 let calculated;
 let operatorVar;
+let operatedOnce;
 
 // -- PRIMARY DISPLAY POPULATOR -- //
 
 function displayNumbers() {
+
     if (!operated) {
         numbers.forEach(number => number.addEventListener('click', () => {
             calc.display = +(displayedNum.textContent += number.value);
@@ -55,16 +57,23 @@ function displayNumbers() {
             calc.display = displayedNum.textContent += decimal.textContent;
             decimal.disabled = true;
         });
-    } 
+    }  
+
+    if (!calculated) {
+        operators.forEach(operator => operator.addEventListener('click', calculate));
+
+    }
 }
 
 function determineOperator() {
 
     operators.forEach(operator => operator.addEventListener('click', () => {
-        
-        if (operator !== equals) operatorVar = operator;
+
         operated = true;
         calculated = false;
+    
+        if (operator !== equals) operatorVar = operator;
+
         if (operator === addition) {
             calc.operator = add;
             setSecondNum();
@@ -81,74 +90,80 @@ function determineOperator() {
             calc.operator = divide;
             setSecondNum();
         }
+
     }));
 }
 
+
 function setSecondNum() {
-    if (operated) {
+
         displayedNum.textContent = displayNumbers();
         calc.num2 = calc.display;
+
         if (calc.display.toString().length > 8) {
             displayedAnswer.textContent = calc.display.toPrecision(5) + ` ${operatorVar.textContent} `;
-        } else {
+        } 
+        
+        else {
             displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;
         }
         
-    }
     if (!calc.display) { // what to do if operator clicked before a number
         displayedAnswer.textContent = 0;
         calc.answer = 0;
         calc.num2 = calc.answer;
     }
-    
+
     decimal.disabled = false;
+    
 }
 
-function displayResult() {
+equals.addEventListener('click', calculate);
+function calculate() {
+    calculated = true;
+    operated = false;
 
-    equals.addEventListener('click', () => {
+    if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
+    
+    displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
+    calc.answer = +displayedAnswer.textContent;
+    calc.num1 = calc.answer;
 
-        calculated = true;
-        operated = false;
-        if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
-        if (displayedAnswer.textContent.includes('NaN')) displayedAnswer.textContent = 'Not a number';
-
-        displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
-        calc.answer = +displayedAnswer.textContent;
-        calc.num1 = calc.answer;
-        calc.display = +displayedNum.textContent;
-
-        if (!calc.hasOwnProperty('num2')) {modify();}
-        reset(); 
-    });
+    if (!calc.hasOwnProperty('num2')) {modify();}
+    reset(); 
 }
 
 // -- HELPER FUNCTIONS -- //
 
 function modify() {
+
     displayedAnswer.textContent = displayedNum.textContent;
     calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
     calc.display = calc.answer;
     displayedAnswer.textContent = calc.display;
+
 }
 
 function reset() {
-    if (calculated) {
+
     displayedNum.textContent = '';
-    calc.display = calc.answer; // this allowed me to string together calculations
+    calc.display = calc.answer; // this allowed me to string together calculations after equals is clicked
     decimal.disabled = false;
-    }
+
     if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(5);}
+
 }
 
 //--- EVENT LISTENERS FOR ACCESSORY BUTTONS -- //
 
 clear.addEventListener('click', () => {
+
   displayedNum.textContent = '';
   displayedAnswer.textContent = 0;
   calc = {};
   calculated = false;
   decimal.disabled = false;
+
 });
 
 percent.addEventListener('click', () => {
@@ -158,11 +173,15 @@ percent.addEventListener('click', () => {
         displayedNum.textContent = +(calc.display * .01);
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
-    } else if (operated) {
+
+    } 
+    
+    else if (operated) {
         displayedAnswer.textContent = operate(multiply, calc.num2, calc.num1 * .01);
         calc.display = +displayedAnswer.textContent;
         calc.num1 = calc.display;
     } 
+
     else if (calculated) {
         displayedAnswer.textContent = (calc.num1 * .01);
         displayedNum.textContent = +(calc.display * .01);
@@ -173,17 +192,20 @@ percent.addEventListener('click', () => {
 });
 
 opposite.addEventListener('click', () => {
+
     if (!calc.num2 && !calculated) {
         displayedAnswer.textContent = +(calc.display * -1);
         displayedNum.textContent = +(calc.display * -1);
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
     }
+
     else if (operated) {
         displayedAnswer.textContent = operate(multiply, 1, calc.num1 * -1);
         calc.display = +displayedAnswer.textContent;
         calc.num1 = calc.display;
     } 
+
     else if (calculated) {
         displayedAnswer.textContent = (calc.num1 * -1);
         displayedNum.textContent = +(calc.display * -1);
@@ -195,4 +217,4 @@ opposite.addEventListener('click', () => {
 
 displayNumbers();
 determineOperator();
-displayResult();
+// displayResult();
