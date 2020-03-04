@@ -92,7 +92,6 @@ button {
     align-items: center;
     justify-content: flex-end;
     letter-spacing: 1.5px;
-    /* overflow: hidden; */
     font-weight: 400;
 }
 
@@ -106,7 +105,7 @@ button {
 .display-answer {
     grid-row: 2 / 3;
     grid-column: 1 / 5;
-    font-size: 3.5rem;
+    font-size: 4rem;
     padding-right: 22px;
     padding-bottom: 20px;
 }

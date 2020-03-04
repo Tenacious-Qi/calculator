@@ -64,6 +64,8 @@ function determineOperator() {
 
     operators.forEach(operator => operator.addEventListener('click', () => {
 
+        equals.disabled = false;
+
         if (!calculated) {
             calculate();
         }
@@ -101,7 +103,7 @@ function setSecondNum() {
         calc.num2 = calc.display;
 
         if (calc.display.toString().length > 9) {
-            displayedAnswer.textContent = calc.display.toPrecision(7) + ` ${operatorVar.textContent} `;
+            displayedAnswer.textContent = calc.display.toPrecision(6) + ` ${operatorVar.textContent} `;
         } 
         
         else {
@@ -118,7 +120,10 @@ function setSecondNum() {
     
 }
 
-equals.addEventListener('click', calculate);
+equals.addEventListener('click', () => {
+    calculate();
+    equals.disabled = true;
+});
 
 function calculate() {
     
@@ -135,7 +140,8 @@ function calculate() {
     calc.display = calc.answer
     displayedNum.textContent = '';
 
-    if (displayedAnswer.textContent.length > 9) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(7);}
+    if (displayedAnswer.textContent.length > 9) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
+    if (displayedAnswer.textContent.includes('NaN')) displayedAnswer.textContent = 'Not a number';
 
 }
 
@@ -159,10 +165,13 @@ clear.addEventListener('click', () => {
   calc = {};
   calculated = false;
   decimal.disabled = false;
+  equals.disabled = false;
 
 });
 
 percent.addEventListener('click', () => {
+
+    equals.disabled = false;
     
     if (!calc.num2 && !calculated) {
         displayedAnswer.textContent = (calc.num1 * .01);
@@ -188,6 +197,8 @@ percent.addEventListener('click', () => {
 });
 
 opposite.addEventListener('click', () => {
+
+    equals.disabled = false;
 
     if (!calc.num2 && !calculated) {
         displayedAnswer.textContent = +(calc.display * -1);
