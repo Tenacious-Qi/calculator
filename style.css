@@ -1,12 +1,12 @@
 :root {
     --black: #2d3436;
     --darker-black: #161718;
+    --container-black: #1e272e;
     --gray: #dfe6e9;
     --darkergray: #747d8c;
-    --red: #c0392b;
     --purple: #9b59b6;
-    --blue: #2980b9; /*belize hole */
-    --green: #27ae60; /* nephritis */
+    --blue: #2980b9; 
+    --green: #27ae60; 
   }
 
 html {
@@ -63,7 +63,7 @@ h1:hover {
 
 #container {
     margin-top: 15px;
-    background-color: #1e272e;
+    background-color: var(--container-black);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(7, 1fr);
@@ -72,10 +72,12 @@ h1:hover {
     height: 520px;
     border: 4px solid var(--darkergray);
     border-radius: 15px;
+    overflow: hidden;
 }
 
 button {
     border: 1px solid var(--black);
+    color: var(--black);
     font-size: 2rem;
     border-radius: 2px;
 }
@@ -91,8 +93,9 @@ button {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     font-weight: 400;
+
 }
 
 .display {
@@ -100,18 +103,20 @@ button {
     grid-row: 1 / 2;
     font-size: 2.5rem;
     padding-right: 10px;
+    opacity: .75;
 }
 
 .display-answer {
     grid-row: 2 / 3;
     grid-column: 1 / 5;
-    font-size: 4rem;
-    padding-right: 22px;
+    font-size: 3.5rem;
+    padding-right: 30px;
     padding-bottom: 20px;
 }
 
-.error-message {
-    font-size: 12px;
+.display-answer:hover {
+    color: var(--green);
+    transition: .6s;
 }
 
 .zero {

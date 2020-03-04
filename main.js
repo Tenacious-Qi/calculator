@@ -1,13 +1,8 @@
 function add (a, b) {return a + b;}
 function subtract (a, b) {return a - b;}
 function multiply (a, b) {return a * b;}
-function divide (a, b) {
-    if (a / b === Infinity || a / b === -Infinity || a === 0 && b === 0) {
-        return 'Not a number';
-    } else {
-        return a / b;
-    }
-}
+function divide (a, b) {return a / b;}
+
 
 function operate (operator, num1, num2) {
     switch (operator) {
@@ -19,6 +14,7 @@ function operate (operator, num1, num2) {
             return multiply(num1, num2);
         case divide :
             return divide(num1, num2);
+
     }
 }
 
@@ -92,23 +88,19 @@ function determineOperator() {
             calc.operator = divide;
             setSecondNum();
         }
-        
+
     }));
 
 }
 
 function setSecondNum() {
 
-        displayedNum.textContent = displayNumbers();
-        calc.num2 = calc.display;
+    displayedNum.textContent = displayNumbers();
+    calc.num2 = calc.display;
 
-        if (calc.display.toString().length > 9) {
-            displayedAnswer.textContent = calc.display.toPrecision(6) + ` ${operatorVar.textContent} `;
-        } 
+    if (calc.display.toString().length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6) + ` ${operatorVar.textContent} `;} 
         
-        else {
-            displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;
-        }
+    else {displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;}
         
     if (!calc.display) { // what to do if operator clicked before a number
         displayedAnswer.textContent = 0;
@@ -131,8 +123,9 @@ function calculate() {
     operated = false;
     
     if (!calc.operator && !calc.num2) displayedAnswer.textContent = calc.display;
-    
+
     displayedAnswer.textContent = operate(calc.operator, calc.num2, calc.num1);
+
     calc.answer = +displayedAnswer.textContent;
     calc.num1 = calc.answer;
     
@@ -140,20 +133,8 @@ function calculate() {
     calc.display = calc.answer
     displayedNum.textContent = '';
 
-    if (displayedAnswer.textContent.length > 9) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
-    if (displayedAnswer.textContent.includes('NaN')) displayedAnswer.textContent = 'Not a number';
+    truncateTextDisplay();
 
-}
-
-// -- HELPER FUNCTIONS -- //
-
-function modify() {
-
-    displayedAnswer.textContent = displayedNum.textContent;
-    calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
-    calc.display = calc.answer;
-    displayedAnswer.textContent = calc.display;
-    
 }
 
 //--- EVENT LISTENERS FOR ACCESSORY BUTTONS -- //
@@ -170,57 +151,80 @@ clear.addEventListener('click', () => {
 });
 
 percent.addEventListener('click', () => {
-
-    equals.disabled = false;
     
     if (!calc.num2 && !calculated) {
-        displayedAnswer.textContent = (calc.num1 * .01);
-        displayedNum.textContent = +(calc.display * .01);
+        calculatePercentage();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
-
     } 
     
     else if (operated) {
-        displayedAnswer.textContent = operate(multiply, calc.num2, calc.num1 * .01);
+        //allow intermediate percentage calculation, for e.g., 100 + 20% = 120, shows 20 before equals is pressed and displays 120//
+        displayedAnswer.textContent = operate(multiply, calc.num2, calc.num1 * .01); 
         calc.display = +displayedAnswer.textContent;
         calc.num1 = calc.display;
     } 
 
     else if (calculated) {
-        displayedAnswer.textContent = (calc.num1 * .01);
-        displayedNum.textContent = +(calc.display * .01);
+        calculatePercentage();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
     }
+
+    truncateTextDisplay();
 
 });
 
 opposite.addEventListener('click', () => {
 
-    equals.disabled = false;
 
     if (!calc.num2 && !calculated) {
-        displayedAnswer.textContent = +(calc.display * -1);
-        displayedNum.textContent = +(calc.display * -1);
+        calculateOpposite();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
+
     }
 
     else if (operated) {
-        displayedAnswer.textContent = operate(multiply, 1, calc.num1 * -1);
+        displayedAnswer.textContent = operate(multiply, 1, calc.num1 * -1); 
         calc.display = +displayedAnswer.textContent;
         calc.num1 = calc.display;
+
     } 
 
     else if (calculated) {
-        displayedAnswer.textContent = (calc.num1 * -1);
-        displayedNum.textContent = +(calc.display * -1);
+        calculateOpposite();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
     }
-    
+
 });
+
+function modify() {
+
+    displayedAnswer.textContent = displayedNum.textContent;
+    calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
+    calc.display = calc.answer;
+    displayedAnswer.textContent = calc.display;
+    
+}
+
+function calculatePercentage() {
+    displayedAnswer.textContent = (calc.num1 * .01);
+    displayedNum.textContent = +(calc.display * .01);
+    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
+
+}
+
+function calculateOpposite() {
+    displayedAnswer.textContent = (calc.num1 * -1);
+    displayedNum.textContent = +(calc.display * -1);
+}
+
+function truncateTextDisplay() {
+    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
+}
+
 
 displayNumbers();
 determineOperator();
