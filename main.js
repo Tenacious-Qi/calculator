@@ -1,10 +1,15 @@
 function add (a, b) {return a + b;}
 function subtract (a, b) {return a - b;}
 function multiply (a, b) {return a * b;}
-function divide (a, b) {return a / b;}
+function divide (a, b) {
+    if ( a / b === Infinity || a / b === -Infinity || a === 0 && b === 0) return errorMessage;
+    return a / b;
+}
 
+const errorMessage = 'No, thank you.';
 
 function operate (operator, num1, num2) {
+
     switch (operator) {
         case add :
             return add(num1, num2);
@@ -38,9 +43,6 @@ let calc = {};
 let operated;
 let calculated;
 let operatorVar;
-let operatedOnce;
-
-// -- PRIMARY DISPLAY POPULATOR -- //
 
 function displayNumbers() {
 
@@ -56,20 +58,18 @@ function displayNumbers() {
     }  
 }
 
+// sets an operator to the calc{} object and calls calculate if equals hasn't been clicked
 function determineOperator() {
 
     operators.forEach(operator => operator.addEventListener('click', () => {
 
         equals.disabled = false;
 
-        if (!calculated) {
-            calculate();
-        }
-        
+        if (!calculated) calculate();
+    
         operated = true;
         calculated = false;
         
-
         operatorVar = operator;
 
         if (operator === addition) {
@@ -102,10 +102,12 @@ function setSecondNum() {
         
     else {displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;}
         
-    if (!calc.display) { // what to do if operator clicked before a number
+    if (!calc.display) { 
+        
+        // if operator clicked before a number
         displayedAnswer.textContent = 0;
         calc.answer = 0;
-        calc.num2 = calc.answer;
+
     }
 
     decimal.disabled = false;
@@ -113,12 +115,15 @@ function setSecondNum() {
 }
 
 equals.addEventListener('click', () => {
+
     calculate();
     equals.disabled = true;
+
 });
 
 function calculate() {
-    
+
+    secondNum = false;
     calculated = true;
     operated = false;
     
@@ -129,7 +134,7 @@ function calculate() {
     calc.answer = +displayedAnswer.textContent;
     calc.num1 = calc.answer;
     
-    if (!calc.hasOwnProperty('num2')) {modify();}
+    if (!calc.hasOwnProperty('num2')) modify();
     calc.display = calc.answer
     displayedNum.textContent = '';
 
@@ -151,21 +156,26 @@ clear.addEventListener('click', () => {
 });
 
 percent.addEventListener('click', () => {
+
+    if (!calc.display) {return 0;}
     
     if (!calc.num2 && !calculated) {
+
         calculatePercentage();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
     } 
     
     else if (operated) {
-        //allow intermediate percentage calculation, for e.g., 100 + 20% = 120, shows 20 before equals is pressed and displays 120//
+
+    //allow intermediate percentage calculation, for e.g., 100 + 20% = 120, shows 20 before equals is pressed and then displays 120
         displayedAnswer.textContent = operate(multiply, calc.num2, calc.num1 * .01); 
         calc.display = +displayedAnswer.textContent;
         calc.num1 = calc.display;
     } 
 
     else if (calculated) {
+
         calculatePercentage();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
@@ -177,8 +187,10 @@ percent.addEventListener('click', () => {
 
 opposite.addEventListener('click', () => {
 
+    if (!calc.display) {return 0;}
 
     if (!calc.num2 && !calculated) {
+
         calculateOpposite();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
@@ -186,6 +198,7 @@ opposite.addEventListener('click', () => {
     }
 
     else if (operated) {
+
         displayedAnswer.textContent = operate(multiply, 1, calc.num1 * -1); 
         calc.display = +displayedAnswer.textContent;
         calc.num1 = calc.display;
@@ -193,38 +206,47 @@ opposite.addEventListener('click', () => {
     } 
 
     else if (calculated) {
+
         calculateOpposite();
         calc.answer = +(displayedNum.textContent);
         calc.display = calc.answer;
+
     }
 
 });
 
+// this allowed answer field to be operated on if only equals sign is clicked
 function modify() {
 
     displayedAnswer.textContent = displayedNum.textContent;
-    calc.answer = +displayedAnswer.textContent; // this allowed answer field to be operated on if only equals sign is clicked
+    calc.answer = +displayedAnswer.textContent; 
     calc.display = calc.answer;
     displayedAnswer.textContent = calc.display;
     
 }
 
 function calculatePercentage() {
+
     displayedAnswer.textContent = (calc.num1 * .01);
     displayedNum.textContent = +(calc.display * .01);
-    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
+    truncateTextDisplay();
 
 }
 
 function calculateOpposite() {
+    
     displayedAnswer.textContent = (calc.num1 * -1);
     displayedNum.textContent = +(calc.display * -1);
+
+    truncateTextDisplay();
 }
 
 function truncateTextDisplay() {
-    if (displayedAnswer.textContent.length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
-}
 
+    if (displayedAnswer.textContent.length > 8 && displayedAnswer.textContent !== errorMessage) {
+        displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6);}
+
+}
 
 displayNumbers();
 determineOperator();

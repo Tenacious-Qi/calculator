@@ -7,6 +7,7 @@
     --purple: #9b59b6;
     --blue: #2980b9; 
     --green: #27ae60; 
+    --red: #c0392b;
   }
 
 html {
@@ -53,7 +54,7 @@ h1:hover {
 .odin-logo {
     height: 40px;
     width: 35px;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .odin-logo:hover {
@@ -86,6 +87,7 @@ button {
     transform: scale(1.05);
     transition: .2s;
     background-color: var(--darkergray);
+    color: var(--gray);
 }
 
 .display, .display-answer {
@@ -152,4 +154,8 @@ button {
     font-weight: 700;
 }
 
-
+.clear:hover {
+    background-color: var(--red);
+    color: var(--gray);
+    transition: .2s;
+}
