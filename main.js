@@ -37,7 +37,7 @@ const displayedNum = document.querySelector('.display');
 const displayedAnswer = document.querySelector('.display-answer');
 const decimal = document.querySelector('.decimal');
 
-displayedAnswer.textContent = 0;
+displayedAnswer.textContent = 'Welcome';
 
 let calc = {};
 let operated;
@@ -50,19 +50,21 @@ function displayNumbers() {
         numbers.forEach(number => number.addEventListener('click', () => {
             calc.display = +(displayedNum.textContent += number.value);
             calc.num1 = calc.display;
+            
         }));
         decimal.addEventListener('click', () => {
             calc.display = displayedNum.textContent += decimal.textContent;
             decimal.disabled = true;
         });
     }  
+    
 }
 
 // sets an operator to the calc{} object and calls calculate if equals hasn't been clicked
 function determineOperator() {
 
     operators.forEach(operator => operator.addEventListener('click', () => {
-
+        
         equals.disabled = false;
 
         if (!calculated) calculate();
@@ -88,6 +90,7 @@ function determineOperator() {
             calc.operator = divide;
             setSecondNum();
         }
+       
 
     }));
 
@@ -110,6 +113,7 @@ equals.addEventListener('click', () => {
 
     calculate();
     equals.disabled = true;
+    
 
 });
 

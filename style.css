@@ -114,7 +114,24 @@ button {
     font-size: 3.5rem;
     padding-right: 30px;
     padding-bottom: 20px;
+    animation: fadein 2s;
 }
+
+.fade-in {
+    animation: fadein 2s;
+}
+
+@keyframes fadein {
+    from { 
+        opacity: 0;
+        color: var(--green); 
+    }
+    to   { 
+        opacity: 1;
+        color: var(--gray);
+    }
+}
+
 
 .display-answer:hover {
     color: var(--green);
