@@ -95,21 +95,13 @@ function determineOperator() {
 
 function setSecondNum() {
 
-    displayedNum.textContent = displayNumbers();
+    displayedNum.textContent = '';
     calc.num2 = calc.display;
 
     if (calc.display.toString().length > 8) {displayedAnswer.textContent = (+displayedAnswer.textContent).toPrecision(6) + ` ${operatorVar.textContent} `;} 
         
     else {displayedAnswer.textContent = calc.display + ` ${operatorVar.textContent} `;}
         
-    if (!calc.display) { 
-        
-        // if operator clicked before a number
-        displayedAnswer.textContent = 0;
-        calc.answer = 0;
-
-    }
-
     decimal.disabled = false;
     
 }
@@ -123,7 +115,6 @@ equals.addEventListener('click', () => {
 
 function calculate() {
 
-    secondNum = false;
     calculated = true;
     operated = false;
     
@@ -134,11 +125,12 @@ function calculate() {
     calc.answer = +displayedAnswer.textContent;
     calc.num1 = calc.answer;
     
-    if (!calc.hasOwnProperty('num2')) modify();
+    if (!calc.num2) modify();
     calc.display = calc.answer
     displayedNum.textContent = '';
 
     truncateTextDisplay();
+    
 
 }
 
@@ -158,14 +150,7 @@ clear.addEventListener('click', () => {
 percent.addEventListener('click', () => {
 
     if (!calc.display) {return 0;}
-    
-    if (!calc.num2 && !calculated) {
 
-        calculatePercentage();
-        calc.answer = +(displayedNum.textContent);
-        calc.display = calc.answer;
-    } 
-    
     else if (operated) {
 
     //allow intermediate percentage calculation, for e.g., 100 + 20% = 120, shows 20 before equals is pressed and then displays 120
@@ -181,6 +166,8 @@ percent.addEventListener('click', () => {
         calc.display = calc.answer;
     }
 
+     else displayedNum.textContent *= .01 
+
     truncateTextDisplay();
 
 });
@@ -188,14 +175,6 @@ percent.addEventListener('click', () => {
 opposite.addEventListener('click', () => {
 
     if (!calc.display) {return 0;}
-
-    if (!calc.num2 && !calculated) {
-
-        calculateOpposite();
-        calc.answer = +(displayedNum.textContent);
-        calc.display = calc.answer;
-
-    }
 
     else if (operated) {
 
@@ -212,6 +191,10 @@ opposite.addEventListener('click', () => {
         calc.display = calc.answer;
 
     }
+
+    else displayedNum.textContent *= -1;
+
+     truncateTextDisplay();
 
 });
 
@@ -237,7 +220,6 @@ function calculateOpposite() {
     
     displayedAnswer.textContent = (calc.num1 * -1);
     displayedNum.textContent = +(calc.display * -1);
-
     truncateTextDisplay();
 }
 
