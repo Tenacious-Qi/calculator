@@ -129,7 +129,7 @@ function calculate() {
     calc.answer = +displayedAnswer.textContent;
     calc.num1 = calc.answer;
     
-    if (!calc.num2) modify();
+    if (!calc.hasOwnProperty('num2')) modify();
     calc.display = calc.answer
     displayedNum.textContent = '';
 
